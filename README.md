@@ -1,41 +1,196 @@
-<p align="center">
-  <img alt="Lerna" src="./eslint in tents.jpg" width="480">
-</p>
+# eslint-config-suiyobi
 
-# eslint-config-intense
+> "Enterprise Grade Linting"
 
-> "Home of the `1_000` line lint config"
+## Philosophy
 
-This pakage provides an extremely strict and meticulous eslint config that is aimed at TypeScript, React, Jest, and Ramda.
+When coding at scale ensuring high quality code as a project ages can
+prove difficult. Linting can drastically improve code quality by front
+loading many of the issues that should be caught in code review to the
+point where a developer has the most context.
 
-The goal of this project is to use eslint tooling to create as much safety as possible.
+Eslint is a really powerful tool that can do a lot, but there are some
+things it is better at than others. These configurations aim to focus
+on what it is good at. Namely improving code quality by making patterns
+more consistent and encouraging the use of modern language features.
+
+### Code Formatting
+
+Code formatting is extremely useful when working on a team as it as it
+reduces the number of changes that aren't meaningful leaving only the
+important parts for code review. Additionally having consistent
+formatting makes code much easier to read and switch contexts in the
+code base.
+
+But, linting works best when it is showing you meaningful warnings and
+potentially unexpected behavior. Code Formatting rules just increase the
+noise which which makes more important warnings seem less important.
+
+As such these configurations do not include any code formatting (quote
+style, indenting, spacing, etc.) rules. There are much better tools out
+there (prettier) for code formatting so I would encourage you to use
+those and enable format on save before you consider overriding the eslint
+configurations with code formatting rules.
 
 ## Usage
 
-1. Install the correct versions of each peer dependency:
+1. Install the configuration
 
-    ```shell
-    npm info "eslint-config-intense@latest" peerDependencies
-    ```
+   ```shell
+   npm install -D eslint-config-suiyobi
+   ```
 
-    > TIP: if using *npm 5+* you can use this shortcut:
-    >
-    > ```shell
-    > npx install-peerdeps --dev eslint-config-intense
-    > ```
+2. Add a `.eslintrc.js` to the root of your project that looks something like this
 
-2. Add a `.eslintrc.js` to the root of your project that looks like this:
+   ```js
+   module.exports = {
+     overrides: [
+       {
+         extends: [
+           'suiyobi/typescript',
+           'suiyobi/angular',
+           'suiyobi/rxjs',
+           'suiyobi/ngrx',
+         ],
+         files: '**/!(*.spec).ts',
+         parserOptions: { project: './tsconfig.*?.json' },
+       },
+       {
+         extends: ['suiyobi/typescript', 'suiyobi/jest'],
+         files: '**/*.spec.ts',
+         parserOptions: { project: './tsconfig.json' },
+         settings: { jest: { version: 26 } },
+       },
+       {
+         extends: ['suiyobi/angular-template'],
+         files: '**/*.html',
+         parserOptions: { project: './tsconfig.*?.json' },
+       },
+       {
+         extends: ['suiyobi/javascript', 'suiyobi/node'],
+         files: '**/*.js',
+       },
+       {
+         extends: ['suiyobi/markdown'],
+         files: ['*.md'],
+       },
+       {
+         extends: [
+           'suiyobi/javascript',
+           'suiyobi/node',
+           'suiyobi/markdown-snippet',
+         ],
+         files: '*.md.js',
+       },
+       {
+         extends: [
+           'suiyobi/typescript',
+           'suiyobi/angular',
+           'suiyobi/rxjs',
+           'suiyobi/ngrx',
+           'suiyobi/markdown-snippet',
+         ],
+         files: '*.md.ts',
+         parserOptions: { project: './tsconfig.json' },
+       },
+     ],
+     root: true,
+   };
+   ```
 
-    ```js
-    module.exports = {
-      extends: 'eslint-config-intense',
-      rules: {
-        // include any project-specific overrides here
+   You can adjust the configuration to the needs of your project.
+   You may also consider making a configuration for each package if
+   you are using a monorepo to apply the proper platform configurations
+   where they are applicable.
+
+### Entry Points
+
+Each of your extends should consist of either a `platform`, `framework` and
+one or more `utils` OR a `other-parser`.
+
+```js
+['<platform>', '<framework>', ...utils];
+// OR
+['<other-parser>'];
+```
+
+The supported entry points are
+
+#### Platforms
+
+- `suiyobi/typescript`
+- `suiyobi/javascript`
+
+#### Frameworks
+
+- `suiyobi/angular`
+- `suiyobi/node`
+- `suiyobi/jest`
+- `suiyobi/react`
+- `suiyobi/react-native`
+
+#### Utils
+
+- `suiyobi/markdown-snippet`
+- `suiyobi/lodash`
+- `suiyobi/ngrx`
+- `suiyobi/ngneat`
+- `suiyobi/ramda`
+- `suiyobi/rxjs`
+
+#### Other Parsers
+
+- `suiyobi/angular-template`
+- `suiyobi/markdown`
+
+### Rules Overriding
+
+Depending on your project, you may choose to override or add additional
+rules. To do this simply add a `rules` with any rules you wish to override
+under the specific `overrides` where the rule applies.
+
+#### Mono repo import sorting
+
+If you wish to sort your can add this rule to your configuration replacing
+`<your-project>` with the namespace of your packages.
+
+```js
+module.exports = {
+  // ...other settings
+  rules: {
+    'import/order': [
+      'warn',
+      {
+        'alphabetize': {
+          caseInsensitive: false,
+          order: 'asc',
+        },
+        'groups': [['external', 'builtin'], 'internal', 'parent', 'sibling'],
+        'newlines-between': 'always',
+        'pathGroups': [
+          {
+            group: 'external',
+            pattern:
+              '{@angular/**,@nestjs/**,react,react-native,react-*,@vue/**,vue}',
+            position: 'before',
+          },
+          {
+            group: 'external',
+            pattern: '@<your-project>/**',
+            position: 'after',
+          },
+        ],
+        'pathGroupsExcludedImportTypes': ['react'],
       },
-    };
+    ],
+  },
+};
+```
 
-    ```
+## Credits
 
-### Alternative Usage
-
-If you want to test the config (or parts of it) without having to import it directly, you can view a generated JSON version of the config at [`generated.json`]('./generated.json').
+This project forks `eslint-config-intense` for a very strong base of linting
+and tooling. Huge thanks to @dimitropoulos and his great work in setting up
+strong rules. Additional thanks to my co-workers Samuel and Derek for
+introducing me to some linting concepts (todo-expiration) and libraries
+(ramda).

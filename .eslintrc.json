@@ -1,3 +1,27 @@
 {
-  "extends": "./index.js"
+  "root": true,
+  "overrides": [
+    {
+      "extends": ["./javascript.js", "./node.js"],
+      "files": "**/*.js"
+    },
+    {
+      "extends": ["./typescript.js", "./node.js"],
+      "files": "**/*.ts",
+      "parserOptions": { "project": ["./tsconfig.json"] }
+    },
+    {
+      "extends": ["./markdown.js"],
+      "files": "**/*.md"
+    },
+    {
+      "extends": ["./javascript.js", "./node.js", "./markdown-snippet.js"],
+      "files": "**/*.md.js"
+    },
+    {
+      "extends": ["./typescript.js", "./node.js", "./markdown-snippet.js"],
+      "files": "**/*.md.ts",
+      "parserOptions": { "project": "./tsconfig.json" }
+    }
+  ]
 }

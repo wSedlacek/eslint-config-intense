@@ -1,0 +1,7 @@
+{
+  "editor.formatOnSave": true,
+  "eslint.validate": ["markdown", "javascript", "typescript"],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
+}
