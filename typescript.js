@@ -1,7 +1,5 @@
 'use strict';
 
-/* eslint-disable sort-keys -- Keys are grouped based on plugins */
-
 const {
   BUGGY,
   CODE_FORMATTING,
@@ -444,5 +442,3 @@ module.exports = {
     '@typescript-eslint/unified-signatures': WARN,
   },
 };
-
-/* eslint-enable sort-keys -- Keys are grouped based on plugins */

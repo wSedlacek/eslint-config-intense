@@ -1,7 +1,5 @@
 'use strict';
 
-/* eslint-disable sort-keys -- Keys are grouped based on plugins */
-
 const { JAVASCRIPT, OFF, WARN } = require('./utils');
 
 module.exports = {
@@ -28,5 +26,3 @@ module.exports = {
     'node/global-require': OFF(JAVASCRIPT),
   },
 };
-
-/* eslint-enable sort-keys -- Keys are grouped based on plugins */

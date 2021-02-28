@@ -1,7 +1,5 @@
 'use strict';
 
-/* eslint-disable sort-keys -- Keys are grouped based on plugins */
-
 const { NOT_VALUABLE, OFF, SUCCESSOR, WARN } = require('./utils');
 
 module.exports = {
@@ -103,5 +101,3 @@ module.exports = {
     ),
   },
 };
-
-/* eslint-enable sort-keys -- Keys are grouped based on plugins */

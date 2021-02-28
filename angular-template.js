@@ -1,7 +1,5 @@
 'use strict';
 
-/* eslint-disable sort-keys -- Keys are grouped based on plugins */
-
 const { OFF, PROJECT_BY_PROJECT, WARN } = require('./utils');
 
 module.exports = {
@@ -31,5 +29,3 @@ module.exports = {
     '@angular-eslint/template/use-track-by-function': WARN,
   },
 };
-
-/* eslint-enable sort-keys -- Keys are grouped based on plugins */

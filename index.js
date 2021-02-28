@@ -1,7 +1,5 @@
 'use strict';
 
-/* eslint-disable sort-keys -- Keys are grouped based on plugins */
-
 const {
   BUGGY,
   CODE_FORMATTING,
@@ -337,7 +335,9 @@ module.exports = {
     'operator-assignment': WARN, // clarity comes at the cost of disallowing terseness.
     'prefer-exponentiation-operator': WARN,
     'prefer-object-spread': WARN,
-    'sort-keys': WARN, // call me crazy, go ahead.  The reason I think this rule is helpful is because often junior programmers will rely on the order of object properties despite that an object is an unordered collection according to the javascript spec.  This also therefore prevents a footgun where some browsers (e.g. chrome) respect insertion order, but others (e.g. safari) do not.  I fully understand that this lint rule doesn't make such an error impossible, but it makes it difficult to do in the trivial case or at least will call a reviewer's attention by being specifically eslint-ignore'd.
+    'sort-keys': OFF(
+      'There are too many use cases where the order of keys should not be alphabetical'
+    ),
     'sort-vars': WARN, // multiple declaration is turned off anyway.
     'spaced-comment': [
       WARN,
@@ -786,5 +786,3 @@ module.exports = {
     'unicorn/number-literal-case': OFF(CODE_FORMATTING),
   },
 };
-
-/* eslint-enable sort-keys -- Keys are grouped based on plugins */

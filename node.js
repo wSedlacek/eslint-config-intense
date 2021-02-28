@@ -1,6 +1,6 @@
 'use strict';
 
-/* eslint-disable sort-keys, radar/no-duplicate-string -- Keys are grouped based on plugins */
+/* eslint-disable radar/no-duplicate-string -- Keys are grouped based on plugins */
 
 const { BUGGY, NOT_VALUABLE, OFF, TYPESCRIPT, WARN } = require('./utils');
 
@@ -78,4 +78,4 @@ module.exports = {
   },
 };
 
-/* eslint-enable sort-keys, radar/no-duplicate-string -- Keys are grouped based on plugins */
+/* eslint-enable radar/no-duplicate-string -- Keys are grouped based on plugins */

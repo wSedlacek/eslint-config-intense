@@ -1,7 +1,5 @@
 'use strict';
 
-/* eslint-disable sort-keys -- Keys are grouped based on plugins */
-
 const {
   CODE_FORMATTING,
   ERROR,
@@ -252,5 +250,3 @@ module.exports = {
     'react-redux/useSelector-prefer-selectors': WARN,
   },
 };
-
-/* eslint-enable sort-keys -- Keys are grouped based on plugins */
