@@ -718,7 +718,7 @@ module.exports = {
     'unicorn/explicit-length-check': WARN,
     'unicorn/filename-case': WARN,
     'unicorn/import-index': WARN,
-    'unicorn/import-style': WARN,
+    'unicorn/import-style': OFF(NOT_VALUABLE),
     'unicorn/new-for-builtins': WARN,
     'unicorn/no-abusive-eslint-disable': WARN,
     'unicorn/no-array-callback-reference': WARN,

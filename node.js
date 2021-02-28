@@ -1,6 +1,6 @@
 'use strict';
 
-/* eslint-disable sort-keys -- Keys are grouped based on plugins */
+/* eslint-disable sort-keys, radar/no-duplicate-string -- Keys are grouped based on plugins */
 
 const { BUGGY, NOT_VALUABLE, OFF, TYPESCRIPT, WARN } = require('./utils');
 
@@ -15,8 +15,14 @@ module.exports = {
     'node/handle-callback-err': OFF(),
     'node/no-callback-literal': WARN,
     'node/no-exports-assign': WARN,
-    'node/no-extraneous-import': WARN,
-    'node/no-extraneous-require': WARN,
+    'node/no-extraneous-import': BUGGY(
+      'eslint-plugin-node:v11.1.0',
+      "Doesn't work well with Monorepos"
+    ),
+    'node/no-extraneous-require': BUGGY(
+      'eslint-plugin-node:v11.1.0',
+      "Doesn't work well with Monorepos"
+    ),
     'node/no-missing-import': BUGGY(
       'eslint-plugin-node:v11.1.0',
       'TypeScript support is missing'
@@ -72,4 +78,4 @@ module.exports = {
   },
 };
 
-/* eslint-enable sort-keys -- Keys are grouped based on plugins */
+/* eslint-enable sort-keys, radar/no-duplicate-string -- Keys are grouped based on plugins */

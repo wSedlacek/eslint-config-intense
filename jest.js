@@ -14,6 +14,10 @@ module.exports = {
   },
   plugins: ['jest', 'jest-dom', 'jest-formatting'],
   rules: {
+    // plugin:fp ***************************************************************
+    // rules URL: https://github.com/jfmengels/eslint-plugin-fp#rules
+    'fp/no-mutation': OFF(NOT_VALUABLE),
+
     // plugin:jest *************************************************************
     // rules URL: https://github.com/jest-community/eslint-plugin-jest#rules
     'jest/consistent-test-it': [WARN, { fn: 'it' }],
@@ -30,7 +34,7 @@ module.exports = {
     'jest/no-duplicate-hooks': WARN,
     'jest/no-export': WARN,
     'jest/no-focused-tests': WARN,
-    'jest/no-hooks': WARN,
+    'jest/no-hooks': OFF(NOT_VALUABLE),
     'jest/no-identical-title': WARN,
     'jest/no-if': WARN,
     'jest/no-interpolation-in-snapshots': WARN,

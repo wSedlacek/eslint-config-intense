@@ -1,6 +1,6 @@
 {
   "name": "eslint-config-suiyobi",
-  "version": "0.0.1",
+  "version": "0.0.8",
   "description": "Enterprise Grade Linting",
   "repository": "wSedlacek/eslint-config-suiyobi",
   "license": "MIT",
@@ -37,9 +37,8 @@
     "lint": "eslint --ext=tsx,ts,mjs,js,jsx,md ."
   },
   "peerDependencies": {
-    "@angular/compiler": "^11.2.3",
-    "eslint": "^7.21.0",
-    "typescript": "^4.2.2"
+    "eslint": "*",
+    "typescript": "*"
   },
   "dependencies": {
     "@angular-eslint/eslint-plugin": "^1.2.0",
@@ -80,7 +79,8 @@
     "eslint-plugin-sort-export-all": "^1.1.1",
     "eslint-plugin-ternary": "^1.0.3",
     "eslint-plugin-unicorn": "^28.0.2",
-    "markdown-eslint-parser": "^1.2.1"
+    "markdown-eslint-parser": "^1.2.1",
+    "tsutils": "^3.20.0"
   },
   "devDependencies": {
     "@angular/compiler": "^11.2.3",

@@ -53,7 +53,7 @@ configurations with code formatting rules.
            'suiyobi/ngrx',
          ],
          files: '**/!(*.spec).ts',
-         parserOptions: { project: './tsconfig.*?.json' },
+         parserOptions: { project: './tsconfig.json' },
        },
        {
          extends: ['suiyobi/typescript', 'suiyobi/jest'],
@@ -64,7 +64,7 @@ configurations with code formatting rules.
        {
          extends: ['suiyobi/angular-template'],
          files: '**/*.html',
-         parserOptions: { project: './tsconfig.*?.json' },
+         parserOptions: { project: './tsconfig.json' },
        },
        {
          extends: ['suiyobi/javascript', 'suiyobi/node'],

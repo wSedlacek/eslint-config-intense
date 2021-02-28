@@ -69,6 +69,7 @@ module.exports = {
     'no-array-constructor': TYPESCRIPT_EXTENDED,
     'object-curly-spacing': TYPESCRIPT_EXTENDED,
     'quotes': TYPESCRIPT_EXTENDED,
+    'require-await': TYPESCRIPT_EXTENDED,
     'semi': TYPESCRIPT_EXTENDED,
     'space-before-function-paren': TYPESCRIPT_EXTENDED,
     'space-infix-ops': TYPESCRIPT_EXTENDED,
@@ -224,8 +225,8 @@ module.exports = {
     '@typescript-eslint/consistent-type-definitions': [WARN, 'interface'],
     '@typescript-eslint/consistent-type-imports': [
       WARN,
-      { prefer: 'type-imports', disallowTypeAnnotations: true },
-    ],
+      { prefer: 'no-type-imports', disallowTypeAnnotations: true },
+    ], // Type imports don't work well with sorting at this time
     '@typescript-eslint/explicit-function-return-type': [
       WARN,
       {
@@ -296,15 +297,19 @@ module.exports = {
     '@typescript-eslint/naming-convention': [
       'warn',
       {
+        selector: 'memberLike',
+        format: ['camelCase'],
+        leadingUnderscore: 'forbid',
+      },
+      {
         selector: 'variableLike',
         format: ['camelCase'],
         leadingUnderscore: 'forbid',
       },
       {
-        selector: 'memberLike',
-        modifiers: ['private'],
+        selector: 'parameter',
         format: ['camelCase'],
-        leadingUnderscore: 'forbid',
+        leadingUnderscore: 'allow',
       },
       {
         selector: 'variable',
