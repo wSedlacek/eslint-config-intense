@@ -6,6 +6,7 @@ const {
   NOT_VALUABLE,
   OFF,
   PROJECT_BY_PROJECT,
+  SUCCESSOR,
   TYPESCRIPT,
   WARN,
 } = require('./utils');
@@ -111,9 +112,10 @@ module.exports = {
 
     // plugin:react ************************************************************
     // rules URL: https://github.com/yannickcr/eslint-plugin-react/tree/master/docs/rules
-    'react/boolean-prop-naming': OFF(
-      "I'll name my variables whatever I wish thank you very much"
-    ),
+    'react/boolean-prop-naming': [
+      WARN,
+      { rule: '^(is|should|has|can|did|will)[A-Z]([A-Za-z0-9]?)+' },
+    ],
     'react/button-has-type': WARN,
     'react/default-props-match-prop-types': OFF('#ProptypesAreDead'),
     'react/destructuring-assignment': WARN,
@@ -186,15 +188,10 @@ module.exports = {
     'react/jsx-curly-brace-presence': WARN,
     'react/jsx-filename-extension': [WARN, { extensions: ['.jsx', '.tsx'] }],
     'react/jsx-fragments': [WARN, 'element'], // I don't find it a bad thing to import `Fragment`.  at least that way it's crystal-clear what the author intended.  In a few years if it's super common to use the shorthand I could be persuaded to switch camps.  also the thing about fragments not being able to have a key or attribute when using the shorthand sways my opinion.
-    'react/jsx-handler-names': OFF(
-      "Naming is hard.  Often there's a good reason.  If you can't do naming well.. I don't believe a linter can save you."
-    ),
+    'react/jsx-handler-names': WARN,
     'react/jsx-key': WARN,
-    'react/jsx-max-depth': [WARN, { max: 25 }], // this is almost useless, but not completely so I set it to a somewhat absurd maximum.  Using things like styled-components and styletron increases the jsx depth quite a bit (necessarily) in complex layouts.
-    'react/jsx-no-bind': [
-      WARN,
-      { allowArrowFunctions: true, ignoreRefs: true },
-    ],
+    'react/jsx-max-depth': [WARN, { max: 15 }], // this is almost useless, but not completely so I set it to a somewhat absurd maximum.  Using things like styled-components and styletron increases the jsx depth quite a bit (necessarily) in complex layouts.
+    'react/jsx-no-bind': [WARN, { ignoreRefs: true }],
     'react/jsx-no-comment-textnodes': WARN,
     'react/jsx-no-constructed-context-values': WARN, // sure.. I guess..
     'react/jsx-no-duplicate-props': WARN,
@@ -209,8 +206,8 @@ module.exports = {
     'react/jsx-props-no-spreading': WARN, // I firmly believe that (except in rare cases) this behavior is the source of many bugs (that I have seen) and should require an explanation (i.e. when this rule is disabled) every time.
     'react/jsx-sort-default-props': WARN,
     'react/jsx-sort-props': WARN, // hate me if you wish.  the goal of this project is for the code to be as consistent as possible.  also this is now auto-fixable which is cool.
-    'react/jsx-uses-react': WARN,
-    'react/jsx-uses-vars': WARN,
+    'react/jsx-uses-react': SUCCESSOR('no-unused-vars'),
+    'react/jsx-uses-vars': SUCCESSOR('no-unused-vars'),
 
     // Disabled due to overlap with code formatters, eg Prettier
     'react/jsx-child-element-spacing': OFF(CODE_FORMATTING),
