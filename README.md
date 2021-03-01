@@ -14,6 +14,27 @@ things it is better at than others. These configurations aim to focus
 on what it is good at. Namely improving code quality by making patterns
 more consistent and encouraging the use of modern language features.
 
+### Special Cases
+
+The goal isn't to prevent patterns from being used, but instead to
+encourage good patterns by default and documenting where patterns
+need to be broken via required descriptions on disable directives.
+
+If for example I have a valid use case for a file to be longer than
+1000 lines long then I can disable `max-lines` with the following
+directive.
+
+```ts
+/* eslint-disable max-lines -- This file needs to include all it's dependencies so that they remain private */
+...
+/* eslint-enable max-lines -- Close disabled rule */
+```
+
+Requiring descriptions like this not only encourages thought about
+why this pattern is being broken by the developer but by the entire
+team during code review and future developers coming back to add to
+and refactor this code.
+
 ### Code Formatting
 
 Code formatting is extremely useful when working on a team as it as it
