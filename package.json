@@ -1,6 +1,6 @@
 {
   "name": "eslint-config-suiyobi",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "description": "Enterprise Grade Linting",
   "repository": "wSedlacek/eslint-config-suiyobi",
   "license": "MIT",
