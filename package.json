@@ -1,6 +1,6 @@
 {
   "name": "eslint-config-suiyobi",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Enterprise Grade Linting",
   "repository": "wSedlacek/eslint-config-suiyobi",
   "license": "MIT",
@@ -12,11 +12,21 @@
     "airbnb",
     "typescript",
     "jest",
+    "lodash",
     "ramda",
+    "rxjs",
+    "markdown",
+    "ngrx",
     "functional",
     "javascript",
+    "typescript",
     "styleguide",
-    "enterprise"
+    "enterprise",
+    "node",
+    "angular",
+    "react",
+    "nestjs",
+    "jest"
   ],
   "author": {
     "name": "wSedlacek",
