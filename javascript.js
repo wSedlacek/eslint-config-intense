@@ -1,5 +1,3 @@
-'use strict';
-
 const { JAVASCRIPT, OFF, WARN } = require('./utils');
 
 module.exports = {
@@ -24,5 +22,11 @@ module.exports = {
     'node/no-unsupported-features/es-syntax': WARN,
     'node/no-unsupported-features/node-builtins': WARN,
     'node/global-require': OFF(JAVASCRIPT),
+
+    // plugin:tree-shaking *****************************************************
+    // rules URL: https://github.com/lukastaegert/eslint-plugin-tree-shaking
+    'tree-shaking/no-side-effects-in-initialization': OFF(
+      'When using commonjs side effects cannot be avoided'
+    ),
   },
 };

@@ -1,5 +1,3 @@
-'use strict';
-
 const {
   BUGGY,
   CODE_FORMATTING,
@@ -74,6 +72,12 @@ module.exports = {
     'no-duplicate-imports': TYPESCRIPT_EXTENDED,
     'no-useless-constructor': TYPESCRIPT_EXTENDED,
     'camelcase': SUCCESSOR('@typescript-eslint/naming-convention'),
+
+    // plugin:@shopify *********************************************************
+    // rules URL: https://github.com/Shopify/web-configs/tree/main/packages/eslint-plugin#plugin-provided-rules
+    '@shopify/typescript/prefer-pascal-case-enums': WARN,
+    '@shopify/typescript/prefer-singular-enums': WARN,
+    '@shopify/typescript/prefer-build-client-schema': WARN,
 
     // plugin:import ***********************************************************
     // rules URL: https://github.com/benmosher/eslint-plugin-import#rules
@@ -318,6 +322,13 @@ module.exports = {
       },
       {
         selector: 'variable',
+        types: ['boolean', 'string', 'number'],
+        format: ['UPPER_CASE'],
+        modifiers: ['const'],
+        leadingUnderscore: 'forbid',
+      },
+      {
+        selector: 'variable',
         format: ['camelCase', 'UPPER_CASE', 'PascalCase'],
         leadingUnderscore: 'forbid',
       },
@@ -340,7 +351,7 @@ module.exports = {
         format: ['PascalCase'],
         custom: {
           regex: '^I[A-Z]',
-          match: true,
+          match: false,
         },
         leadingUnderscore: 'forbid',
       },
@@ -360,7 +371,10 @@ module.exports = {
     ),
     '@typescript-eslint/no-explicit-any': WARN,
     '@typescript-eslint/no-extra-non-null-assertion': WARN, // I really love that this rule had to be made.  `thing!!!!!!!!!!!!!!!.shutUpTypeScript()`, lol.
-    '@typescript-eslint/no-extraneous-class': WARN,
+    '@typescript-eslint/no-extraneous-class': [
+      WARN,
+      { allowWithDecorator: true, allowConstructorOnly: true },
+    ],
     '@typescript-eslint/no-floating-promises': WARN,
     '@typescript-eslint/no-for-in-array': WARN,
     '@typescript-eslint/no-implicit-any-catch': WARN,
@@ -370,7 +384,7 @@ module.exports = {
     '@typescript-eslint/no-misused-promises': WARN,
     '@typescript-eslint/no-namespace': WARN,
     '@typescript-eslint/no-non-null-asserted-optional-chain': WARN,
-    '@typescript-eslint/no-non-null-assertion': WARN, // I'll quote a friend (who is a better programmer than I am) about the non null assertion: "I wish I never learnd of its existence."  Indeed, I view this character as a member of the same family as `any` and `@ts-ignore`.
+    '@typescript-eslint/no-non-null-assertion': WARN, // I'll quote a friend (who is a better programmer than I am) about the non null assertion: "I wish I never learned of its existence."  Indeed, I view this character as a member of the same family as `any` and `@ts-ignore`.
     '@typescript-eslint/no-parameter-properties': OFF(
       'Parameter properties help clean up constructors and are particularly useful with dependency injection'
     ),
@@ -385,17 +399,29 @@ module.exports = {
     '@typescript-eslint/no-unnecessary-type-arguments': WARN,
     '@typescript-eslint/no-unnecessary-type-assertion': WARN,
     '@typescript-eslint/no-unnecessary-type-constraint': WARN,
-    '@typescript-eslint/no-unsafe-assignment': WARN,
-    '@typescript-eslint/no-unsafe-call': WARN,
-    '@typescript-eslint/no-unsafe-member-access': WARN,
-    '@typescript-eslint/no-unsafe-return': WARN,
+    '@typescript-eslint/no-unsafe-assignment': BUGGY(
+      '@typescript-eslint/eslint-plugin:4.15.2',
+      'Types do not follow the editor editor config so it ends up given many false positives'
+    ),
+    '@typescript-eslint/no-unsafe-call': BUGGY(
+      '@typescript-eslint/eslint-plugin:4.15.2',
+      'Types do not follow the editor editor config so it ends up given many false positives'
+    ),
+    '@typescript-eslint/no-unsafe-member-access': BUGGY(
+      '@typescript-eslint/eslint-plugin:4.15.2',
+      'Types do not follow the editor editor config so it ends up given many false positives'
+    ),
+    '@typescript-eslint/no-unsafe-return': BUGGY(
+      '@typescript-eslint/eslint-plugin:4.15.2',
+      'Types do not follow the editor editor config so it ends up given many false positives'
+    ),
     '@typescript-eslint/non-nullable-type-assertion-style': OFF(
       'using non-null assertions cancels the benefits of the strict null-checking mode..'
     ),
     '@typescript-eslint/no-var-requires': WARN,
     '@typescript-eslint/prefer-as-const': WARN,
     '@typescript-eslint/prefer-enum-initializers': WARN,
-    '@typescript-eslint/prefer-for-of': WARN,
+    '@typescript-eslint/prefer-for-of': SUCCESSOR('unicorn/no-for-loop'),
     '@typescript-eslint/prefer-function-type': OFF(
       'Certain abstractions read clearer when documented by interfaces, even those with only one call signature.'
     ),
@@ -405,9 +431,10 @@ module.exports = {
     '@typescript-eslint/prefer-nullish-coalescing': WARN,
     '@typescript-eslint/prefer-optional-chain': WARN,
     '@typescript-eslint/prefer-readonly': WARN, // abiding by this rule will ease transition to the private methods proposal https://github.com/tc39/proposal-private-methods which, because it's at stage 3, will be in the language
-    '@typescript-eslint/prefer-readonly-parameter-types': OFF(
-      "I like this rule.  I really do.  The thing is... it's way too overbearing, unfortunately."
-    ),
+    '@typescript-eslint/prefer-readonly-parameter-types': [
+      WARN,
+      { ignoreInferredTypes: true },
+    ],
     '@typescript-eslint/prefer-reduce-type-parameter': WARN,
     '@typescript-eslint/prefer-regexp-exec': WARN,
     '@typescript-eslint/prefer-string-starts-ends-with': WARN,
@@ -431,7 +458,7 @@ module.exports = {
     '@typescript-eslint/triple-slash-reference': WARN,
     '@typescript-eslint/type-annotation-spacing': OFF(CODE_FORMATTING),
     '@typescript-eslint/typedef': OFF(
-      'type inferencing is your friend... use it.'
+      'type inference is your friend... use it.'
     ),
     '@typescript-eslint/unbound-method': [
       WARN,

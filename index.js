@@ -1,15 +1,14 @@
-'use strict';
-
 const {
   BUGGY,
   CODE_FORMATTING,
   ERROR,
+  NOT_RELEVANT,
   NOT_VALUABLE,
   OFF,
   PROJECT_BY_PROJECT,
   SUCCESSOR,
+  TYPESCRIPT,
   UNKNOWN,
-  USER_DISCRETION,
   WARN,
   restrictedGlobals,
 } = require('./utils');
@@ -18,8 +17,12 @@ module.exports = {
   env: { es6: true },
   parserOptions: {
     ecmaVersion: 2020,
+    ecmaFeatures: {
+      impliedStrict: true,
+    },
   },
   plugins: [
+    '@shopify',
     'codegen',
     'compat',
     'eslint-comments',
@@ -33,6 +36,7 @@ module.exports = {
     'sort-destructure-keys',
     'sort-export-all',
     'ternary',
+    'tree-shaking',
     'unicorn',
   ],
   rules: {
@@ -46,7 +50,7 @@ module.exports = {
     'no-await-in-loop': WARN,
     'no-compare-neg-zero': WARN,
     'no-cond-assign': WARN,
-    'no-console': [OFF('TEMPORARY'), { allow: [WARN, 'error'] }],
+    'no-console': [WARN, { allow: ['warn', 'error'] }],
     'no-constant-condition': WARN,
     'no-control-regex': WARN,
     'no-debugger': WARN,
@@ -120,7 +124,7 @@ module.exports = {
     'no-extend-native': WARN,
     'no-extra-bind': WARN,
     'no-extra-label': WARN,
-    'no-fallthrough': WARN,
+    'no-fallthrough': SUCCESSOR('tsc:noFallthroughCasesInSwitch'),
     'no-global-assign': [ERROR, { exceptions: [] }],
     'no-implicit-coercion': WARN,
     'no-implicit-globals': WARN,
@@ -252,7 +256,7 @@ module.exports = {
     'capitalized-comments': OFF(
       'the reality is that to many things exist in comments that should not be bound by rules (compiler directives, jsDoc, type information, etc.)'
     ),
-    'consistent-this': OFF(),
+    'consistent-this': [WARN, 'self'],
     'func-name-matching': WARN,
     'func-names': UNKNOWN, // still thinking about the implications of this one
     'func-style': [WARN, 'declaration', { allowArrowFunctions: true }],
@@ -272,7 +276,7 @@ module.exports = {
         properties: 'never', // sometimes there are properties in existing data (i.e. 3rd party data) you are trying to map to that you simply can't control.
       },
     ],
-    'id-match': OFF(USER_DISCRETION),
+    'id-match': SUCCESSOR('@typescript-eslint/naming-convention'),
     'lines-between-class-members': [
       WARN,
       'always',
@@ -466,6 +470,44 @@ module.exports = {
     ],
     'symbol-description': WARN,
 
+    // plugin:@shopify *********************************************************
+    // rules URL: https://github.com/Shopify/web-configs/tree/main/packages/eslint-plugin#plugin-provided-rules
+    '@shopify/binary-assignment-parens': [WARN, 'always'],
+    '@shopify/class-property-semi': OFF(CODE_FORMATTING),
+    '@shopify/images-no-direct-imports': WARN,
+    '@shopify/jest/no-all-mocks-methods': OFF(NOT_RELEVANT),
+    '@shopify/jest/no-snapshots': OFF(NOT_RELEVANT),
+    '@shopify/jsx-no-complex-expressions': OFF(NOT_RELEVANT),
+    '@shopify/jsx-no-hardcoded-content': OFF(NOT_RELEVANT),
+    '@shopify/jsx-prefer-fragment-wrappers': OFF(NOT_RELEVANT),
+    '@shopify/no-ancestor-directory-import': WARN,
+    '@shopify/no-debugger': WARN,
+    '@shopify/no-namespace-imports': OFF(NOT_VALUABLE),
+    '@shopify/no-useless-computed-properties': WARN,
+    '@shopify/no-fully-static-classes': OFF(NOT_VALUABLE),
+    '@shopify/polaris-prefer-sectioned-prop': OFF(NOT_RELEVANT),
+    '@shopify/polaris-no-bare-stack-item': OFF(NOT_RELEVANT),
+    '@shopify/prefer-class-properties': WARN,
+    '@shopify/prefer-early-return': [WARN, { maximumStatements: 1 }],
+    '@shopify/prefer-module-scope-constants': BUGGY(
+      '@shopify/eslint-plugin@40.1.0',
+      'False Positives at module top level'
+    ),
+    '@shopify/prefer-twine': OFF(NOT_RELEVANT),
+    '@shopify/react-hooks-strict-return': OFF(NOT_RELEVANT),
+    '@shopify/react-initialize-state': OFF(NOT_RELEVANT),
+    '@shopify/react-no-multiple-render-methods': OFF(NOT_RELEVANT),
+    '@shopify/react-prefer-private-members': OFF(NOT_RELEVANT),
+    '@shopify/react-type-state': OFF(NOT_RELEVANT),
+    '@shopify/restrict-full-import': OFF(NOT_RELEVANT),
+    '@shopify/sinon-no-restricted-features': OFF(NOT_RELEVANT),
+    '@shopify/sinon-prefer-meaningful-assertions': OFF(NOT_RELEVANT),
+    '@shopify/strict-component-boundaries': OFF(NOT_RELEVANT),
+    '@shopify/typescript/prefer-pascal-case-enums': OFF(TYPESCRIPT),
+    '@shopify/typescript/prefer-singular-enums': OFF(TYPESCRIPT),
+    '@shopify/typescript/prefer-build-client-schema': OFF(TYPESCRIPT),
+    '@shopify/webpack/no-unnamed-dynamic-imports': OFF(NOT_VALUABLE),
+
     // plugin:codegen **********************************************************
     // rules URL: https://github.com/mmkal/ts/tree/main/packages/eslint-plugin-codegen#presets
     'codegen/codegen': WARN,
@@ -584,7 +626,7 @@ module.exports = {
           {
             group: 'external',
             pattern:
-              '{@angular/**,@nestjs/**,react,react-native,react-*,@vue/**,vue}',
+              '{@angular/**,@nestjs/**,react,react-native,react-*,@vue/**,vue,@ngneat/spectator,@ngneat/spectator/**}',
             position: 'before',
           },
         ],
@@ -704,6 +746,10 @@ module.exports = {
     'ternary/no-dupe': WARN,
     'ternary/no-unreachable': WARN,
     'ternary/nesting': SUCCESSOR('unicorn/no-nested-ternary'),
+
+    // plugin:tree-shaking *****************************************************
+    // rules URL: https://github.com/lukastaegert/eslint-plugin-tree-shaking
+    'tree-shaking/no-side-effects-in-initialization': WARN,
 
     // plugin:unicorn **********************************************************
     // rules URL: https://github.com/sindresorhus/eslint-plugin-unicorn#rules

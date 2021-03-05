@@ -1,5 +1,3 @@
-'use strict';
-
 const { OFF, WARN } = require('./utils');
 
 module.exports = {

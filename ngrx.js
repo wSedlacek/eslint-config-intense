@@ -1,5 +1,3 @@
-'use strict';
-
 const { SUCCESSOR, WARN } = require('./utils');
 
 module.exports = {

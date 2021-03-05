@@ -20,14 +20,12 @@ The goal isn't to prevent patterns from being used, but instead to
 encourage good patterns by default and documenting where patterns
 need to be broken via required descriptions on disable directives.
 
-If for example I have a valid use case for a file to be longer than
-1000 lines long then I can disable `max-lines` with the following
-directive.
+If for example I needed to use `let` for some reason I could do so
+with the following directive.
 
 ```ts
-/* eslint-disable max-lines -- This file needs to include all it's dependencies so that they remain private */
-...
-/* eslint-enable max-lines -- Close disabled rule */
+// eslint-disable-next-line prefer-const -- This needs to be let
+let something = '';
 ```
 
 Requiring descriptions like this not only encourages thought about
@@ -35,7 +33,19 @@ why this pattern is being broken by the developer but by the entire
 team during code review and future developers coming back to add to
 and refactor this code.
 
-### Code Formatting
+### Single Warning Policy
+
+With how powerful eslint is there is a lot of overlap between it and
+other tools. These configurations intentionally disable any rules that
+overlap with the functions of a tool that does a better job at enforcing
+that particular rule.
+
+With how many rules there are across the wide range of plugins this
+configuration uses there are many that may overlap with each other.
+Where ever possible these configurations attempt to pick a single rule
+of those that overlap so that any given problem is only reported once.
+
+#### Code Formatting
 
 Code formatting is extremely useful when working on a team as it as it
 reduces the number of changes that aren't meaningful leaving only the
@@ -52,6 +62,17 @@ style, indenting, spacing, etc.) rules. There are much better tools out
 there (prettier) for code formatting so I would encourage you to use
 those and enable format on save before you consider overriding the eslint
 configurations with code formatting rules.
+
+#### Type Checking
+
+Writing JavaScript without Type Checking is like playing web dev on
+hardcore mode. It is so easy to shot yourself, or your friend, in the foot.
+We have many great tools now that luckily make our lives much easier. Chief
+among them is TypeScript. While ESLint can enforce many type rules, TypeScript
+does a far better job so any rules that overlap with options or checking already
+done in TypeScript are intentionally disabled much like code formatting rules
+and I would encourage you to explore your `tsconfig.json` options before looking
+to enable any of those rules.
 
 ## Usage
 
@@ -73,7 +94,8 @@ configurations with code formatting rules.
            'suiyobi/rxjs',
            'suiyobi/ngrx',
          ],
-         files: '**/!(*.spec).ts',
+         files: '**/*.ts',
+         excludedFiles: ['**/*.md.ts', '**/*.spec.ts'],
          parserOptions: { project: './tsconfig.json' },
        },
        {
@@ -90,6 +112,7 @@ configurations with code formatting rules.
        {
          extends: ['suiyobi/javascript', 'suiyobi/node'],
          files: '**/*.js',
+         excludedFiles: '**/*.md.js',
        },
        {
          extends: ['suiyobi/markdown'],
@@ -105,19 +128,22 @@ configurations with code formatting rules.
        },
        {
          extends: [
-           'suiyobi/typescript',
+           'suiyobi/javascript',
            'suiyobi/angular',
            'suiyobi/rxjs',
            'suiyobi/ngrx',
            'suiyobi/markdown-snippet',
          ],
          files: '*.md.ts',
-         parserOptions: { project: './tsconfig.json' },
        },
      ],
      root: true,
    };
    ```
+
+   Note: TypeScript rules are not available available in Markdown
+   because while eslint knows how to parse markdown, TypeScript
+   still doesn't.
 
    You can adjust the configuration to the needs of your project.
    You may also consider making a configuration for each package if
@@ -125,6 +151,8 @@ configurations with code formatting rules.
    where they are applicable.
 
 ### Entry Points
+
+#### Overview
 
 Each of your extends should consist of either a `platform`, `framework` and
 one or more `utils` OR a `other-parser`.
@@ -139,23 +167,25 @@ The supported entry points are
 
 #### Platforms
 
-- `suiyobi/typescript`
 - `suiyobi/javascript`
+- `suiyobi/typescript`
 
 #### Frameworks
 
 - `suiyobi/angular`
-- `suiyobi/node`
+- `suiyobi/cypress`
 - `suiyobi/jest`
+- `suiyobi/node`
 - `suiyobi/react`
 - `suiyobi/react-native`
 
 #### Utils
 
-- `suiyobi/markdown-snippet`
+- `suiyobi/fp-ts`
 - `suiyobi/lodash`
-- `suiyobi/ngrx`
+- `suiyobi/markdown-snippet`
 - `suiyobi/ngneat`
+- `suiyobi/ngrx`
 - `suiyobi/ramda`
 - `suiyobi/rxjs`
 

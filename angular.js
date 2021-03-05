@@ -1,8 +1,4 @@
-'use strict';
-
-/* eslint-disable sort-keys -- Keys are grouped based on plugins */
-
-const { OFF, WARN } = require('./utils');
+const { ERROR, OFF, SUCCESSOR, WARN } = require('./utils');
 
 const base = require('.');
 
@@ -20,10 +16,15 @@ module.exports = {
     // plugin:@angular-eslint **************************************************
     // rules URL: https://github.com/angular-eslint/angular-eslint#status-of-codelyzer-rules-conversion
     '@angular-eslint/contextual-decorator': WARN,
-    '@angular-eslint/component-class-suffix': WARN,
+    '@angular-eslint/component-class-suffix': [
+      WARN,
+      {
+        suffixes: ['Component', 'Page'],
+      },
+    ],
     '@angular-eslint/component-max-inline-declarations': WARN,
     '@angular-eslint/component-selector': WARN,
-    '@angular-eslint/contextual-lifecycle': 'error',
+    '@angular-eslint/contextual-lifecycle': ERROR,
     '@angular-eslint/directive-class-suffix': WARN,
     '@angular-eslint/directive-selector': WARN,
     '@angular-eslint/no-attribute-decorator': WARN,
@@ -45,7 +46,9 @@ module.exports = {
     '@angular-eslint/prefer-on-push-component-change-detection': WARN,
     '@angular-eslint/prefer-output-readonly': WARN,
     '@angular-eslint/relative-url-prefix': WARN,
-    '@angular-eslint/use-component-selector': WARN,
+    '@angular-eslint/use-component-selector': OFF(
+      'Pages do not need selectors'
+    ),
     '@angular-eslint/use-component-view-encapsulation': WARN,
     '@angular-eslint/use-injectable-provided-in': WARN,
     '@angular-eslint/use-lifecycle-interface': WARN,
@@ -54,10 +57,10 @@ module.exports = {
 
     // plugin:rxjs-angular ****************************************************
     // rules URL: https://github.com/cartant/eslint-plugin-rxjs-angular#rules
-    'rxjs-angular/prefer-composition': WARN,
+    'rxjs-angular/prefer-composition': SUCCESSOR(
+      'rxjs-angular/prefer-takeuntil'
+    ),
     'rxjs-angular/prefer-async-pipe': WARN,
-    'rxjs-angular/prefer-takeuntil': OFF(),
+    'rxjs-angular/prefer-takeuntil': WARN,
   },
 };
-
-/* eslint-enable sort-keys -- Keys are grouped based on plugins */

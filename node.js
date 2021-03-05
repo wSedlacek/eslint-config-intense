@@ -1,5 +1,3 @@
-'use strict';
-
 /* eslint-disable radar/no-duplicate-string -- Keys are grouped based on plugins */
 
 const { BUGGY, NOT_VALUABLE, OFF, TYPESCRIPT, WARN } = require('./utils');
@@ -39,7 +37,10 @@ module.exports = {
       'eslint-plugin-node:v11.1.0',
       'Is not aware of build'
     ),
-    'node/no-unpublished-require': WARN,
+    'node/no-unpublished-require': BUGGY(
+      'eslint-plugin-node:v11.1.0',
+      "Doesn't work with mono repos"
+    ),
     'node/no-unsupported-features/es-builtins': OFF(TYPESCRIPT),
     'node/no-unsupported-features/es-syntax': OFF(TYPESCRIPT),
     'node/no-unsupported-features/node-builtins': OFF(TYPESCRIPT),

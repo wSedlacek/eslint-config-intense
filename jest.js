@@ -1,5 +1,3 @@
-'use strict';
-
 const { NOT_VALUABLE, OFF, SUCCESSOR, WARN } = require('./utils');
 
 module.exports = {
@@ -12,15 +10,30 @@ module.exports = {
   },
   plugins: ['jest', 'jest-dom', 'jest-formatting'],
   rules: {
+    // plugin:@shopify *********************************************************
+    // rules URL: https://github.com/Shopify/web-configs/tree/main/packages/eslint-plugin#plugin-provided-rules
+    '@shopify/jest/no-all-mocks-methods': WARN,
+    '@shopify/jest/no-snapshots': OFF(NOT_VALUABLE),
+
+    // plugin:@typescript-eslint ***********************************************
+    // rules URL: https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/eslint-plugin
+
+    '@typescript-eslint/explicit-function-return-type': OFF(NOT_VALUABLE),
+    '@typescript-eslint/unbound-method': OFF(NOT_VALUABLE),
+
     // plugin:fp ***************************************************************
     // rules URL: https://github.com/jfmengels/eslint-plugin-fp#rules
     'fp/no-mutation': OFF(NOT_VALUABLE),
+
+    // plugin:radar ************************************************************
+    // rules URL: https://github.com/es-joy/eslint-plugin-radar#rules
+    'radar/no-identical-functions': OFF(NOT_VALUABLE),
 
     // plugin:jest *************************************************************
     // rules URL: https://github.com/jest-community/eslint-plugin-jest#rules
     'jest/consistent-test-it': [WARN, { fn: 'it' }],
     'jest/expect-expect': WARN,
-    'jest/lowercase-name': WARN,
+    'jest/lowercase-name': [WARN, { ignoreTopLevelDescribe: true }],
     'jest/no-alias-methods': WARN,
     'jest/no-commented-out-tests': WARN,
     'jest/no-conditional-expect': WARN,
@@ -28,7 +41,9 @@ module.exports = {
     'jest/no-disabled-tests': OFF(
       'I think having the ability to use .skip is legitimate'
     ),
-    'jest/no-done-callback': WARN,
+    'jest/no-done-callback': OFF(
+      'Having a `done()` callback can be useful when working with rxjs and other async interfaces that are not promises'
+    ),
     'jest/no-duplicate-hooks': WARN,
     'jest/no-export': WARN,
     'jest/no-focused-tests': WARN,

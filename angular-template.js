@@ -1,5 +1,3 @@
-'use strict';
-
 const { OFF, PROJECT_BY_PROJECT, WARN } = require('./utils');
 
 module.exports = {

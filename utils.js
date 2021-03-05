@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * @param {string} _reason the rationale for not using the rule.
  * @returns {'off'} the rule disabled
@@ -48,6 +46,10 @@ module.exports.PROJECT_BY_PROJECT =
 
 /** Used to signify that the rule in question is borderline-useless. */
 module.exports.NOT_VALUABLE =
+  "I don't see enough value to justify including this rule.";
+
+/** Used to signify that the rule in question is not useful for this particular platform */
+module.exports.NOT_RELEVANT =
   "I don't see enough value to justify including this rule.";
 
 /**

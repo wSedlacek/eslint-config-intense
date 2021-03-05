@@ -1,5 +1,3 @@
-'use strict';
-
 const {
   CODE_FORMATTING,
   ERROR,
@@ -16,8 +14,19 @@ module.exports = {
     browser: true,
     es6: true,
   },
-  plugins: ['react', 'jsx-a11y', 'react-hooks', 'react-redux'],
+  plugins: ['jsx-a11y', 'react', 'react-hooks', 'react-perf', 'react-redux'],
   rules: {
+    // plugin:@shopify *********************************************************
+    // rules URL: https://github.com/Shopify/web-configs/tree/main/packages/eslint-plugin#plugin-provided-rules
+    '@shopify/jsx-no-complex-expressions': WARN,
+    '@shopify/jsx-no-hardcoded-content': WARN,
+    '@shopify/jsx-prefer-fragment-wrappers': WARN,
+    '@shopify/react-hooks-strict-return': WARN,
+    '@shopify/react-initialize-state': WARN,
+    '@shopify/react-no-multiple-render-methods': WARN,
+    '@shopify/react-prefer-private-members': WARN,
+    '@shopify/react-type-state': WARN,
+
     // plugin:jsx-a11y *********************************************************
     // rules URL: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y#supported-rules
     'jsx-a11y/accessible-emoji': WARN,
@@ -230,6 +239,13 @@ module.exports = {
     // rules URL: https://github.com/facebook/react/tree/master/packages/eslint-plugin-react-hooks
     'react-hooks/exhaustive-deps': WARN, // Checks effect dependencies
     'react-hooks/rules-of-hooks': ERROR, // Checks rules of Hooks
+
+    // plugin:react-perf *******************************************************
+    // rules URL: https://github.com/cvazac/eslint-plugin-react-perf#list-of-supported-rules
+    'react-perf/jsx-no-new-object-as-prop': WARN,
+    'react-perf/jsx-no-new-array-as-prop': WARN,
+    'react-perf/jsx-no-new-function-as-prop': SUCCESSOR('react/jsx-no-bind'),
+    'react-perf/jsx-no-jsx-as-prop': WARN,
 
     // plugin:react-redux ******************************************************
     // rules URL: https://github.com/DianaSuvorova/eslint-plugin-react-redux#supported-rules

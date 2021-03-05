@@ -1,5 +1,3 @@
-'use strict';
-
 const { NOT_VALUABLE, OFF, WARN } = require('./utils');
 
 module.exports = {

@@ -1,6 +1,4 @@
-'use strict';
-
-const { WARN } = require('./utils');
+const { BUGGY } = require('./utils');
 
 module.exports = {
   parser: 'markdown-eslint-parser',
@@ -9,7 +7,10 @@ module.exports = {
     // plugin:md ***************************************************************
     // rules URL: https://github.com/leo-buneev/eslint-plugin-md#usage
     'md/remark': [
-      WARN,
+      BUGGY(
+        'eslint-plugin-markdown@2.0.0',
+        'The heading increment is given false positives'
+      ),
       {
         plugins: [
           'preset-lint-markdown-style-guide',
@@ -17,7 +18,7 @@ module.exports = {
           // Disable rules handled by Prettier
           ['lint-maximum-line-length', false],
           ['lint-emphasis-marker', false],
-          ['list-item-content-indent', false],
+          ['lint-list-item-content-indent', false],
           ['lint-list-item-indent', false],
           ['lint-list-item-spacing', false],
           ['lint-ordered-list-marker-value', false],
