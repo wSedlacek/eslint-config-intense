@@ -9,6 +9,8 @@ const {
   WARN,
 } = require('./utils');
 
+const base = require('.');
+
 module.exports = {
   env: {
     browser: true,
@@ -75,7 +77,6 @@ module.exports = {
     'jsx-a11y/heading-has-content': WARN,
     'jsx-a11y/html-has-lang': WARN,
     'jsx-a11y/iframe-has-title': WARN,
-    'jsx-a11y/iframes-has-title': WARN,
     'jsx-a11y/img-redundant-alt': WARN,
     'jsx-a11y/interactive-supports-focus': [
       WARN,
@@ -212,7 +213,7 @@ module.exports = {
     'react/jsx-no-undef': ERROR,
     'react/jsx-no-useless-fragment': WARN,
     'react/jsx-pascal-case': WARN,
-    'react/jsx-props-no-spreading': WARN, // I firmly believe that (except in rare cases) this behavior is the source of many bugs (that I have seen) and should require an explanation (i.e. when this rule is disabled) every time.
+    'react/jsx-props-no-spreading': [WARN, { custom: 'ignore' }], // I firmly believe that (except in rare cases) this behavior is the source of many bugs (that I have seen) and should require an explanation (i.e. when this rule is disabled) every time.
     'react/jsx-sort-default-props': WARN,
     'react/jsx-sort-props': WARN, // hate me if you wish.  the goal of this project is for the code to be as consistent as possible.  also this is now auto-fixable which is cool.
     'react/jsx-uses-react': SUCCESSOR('no-unused-vars'),
@@ -261,5 +262,11 @@ module.exports = {
     'react-redux/no-unused-prop-types': WARN,
     'react-redux/prefer-separate-component-file': WARN,
     'react-redux/useSelector-prefer-selectors': WARN,
+
+    // plugin:unicorn **********************************************************
+    // rules URL: https://github.com/sindresorhus/eslint-plugin-unicorn#rules
+    'unicorn/no-null': OFF(
+      'Return values of render functions may need to be null'
+    ),
   },
 };

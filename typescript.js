@@ -81,10 +81,18 @@ module.exports = {
 
     // plugin:import ***********************************************************
     // rules URL: https://github.com/benmosher/eslint-plugin-import#rules
-    'import/named': BUGGY(
-      'eslint-plugin-import:v2.21.1',
-      "doesn't work with TypeScript types, may need to add https://github.com/rx-ts/eslint-import-resolver-ts"
+    'import/named': OFF(TYPESCRIPT),
+    'import/namespace': OFF(TYPESCRIPT),
+    'import/no-cycle': BUGGY(
+      '@typescript-eslint/parser@4.22.1',
+      'Does not play well with flow types.'
     ),
+    'import/default': OFF(TYPESCRIPT),
+    'import/no-deprecated': BUGGY(
+      '@typescript-eslint/parser@4.22.1',
+      'Does not play well with flow types.'
+    ),
+    'import/no-named-as-default-member': OFF(TYPESCRIPT),
     'import/no-unresolved': OFF(TYPESCRIPT),
 
     // plugin:jsdoc ************************************************************
@@ -110,8 +118,6 @@ module.exports = {
     '@typescript-eslint/no-array-constructor':
       base.rules['no-array-constructor'],
     '@typescript-eslint/no-dupe-class-members': OFF(TYPESCRIPT),
-    '@typescript-eslint/no-duplicate-imports':
-      base.rules['no-duplicate-imports'],
     '@typescript-eslint/no-empty-function': base.rules['no-empty-function'],
     '@typescript-eslint/no-extra-parens': base.rules['no-extra-parens'],
     '@typescript-eslint/no-extra-semi': base.rules['no-extra-semi'],
@@ -153,65 +159,10 @@ module.exports = {
       },
     ],
     '@typescript-eslint/ban-tslint-comment': WARN,
-    '@typescript-eslint/ban-types': [
-      WARN,
-      {
-        types: {
-          'String': {
-            message: 'Use string instead',
-            fixWith: 'string',
-          },
-          'Boolean': {
-            message: 'Use boolean instead',
-            fixWith: 'boolean',
-          },
-          'Number': {
-            message: 'Use number instead',
-            fixWith: 'number',
-          },
-          'Symbol': {
-            message: 'Use symbol instead',
-            fixWith: 'symbol',
-          },
-          'Function': {
-            message: [
-              'The `Function` type accepts any function-like value.',
-              'It provides no type safety when calling the function, which can be a common source of bugs.',
-              'It also accepts things like class declarations, which will throw at runtime as they will not be called with `new`.',
-              'If you are expecting the function to accept certain arguments, you should explicitly define the function shape.',
-            ].join('\n'),
-          },
-          'Array': {
-            fixWith: 'unknown[]',
-            message: 'use something like `unknown[]` instead',
-          },
-          // object typing
-          'Object': {
-            fixWith: 'Record<string, unknown>',
-            message: [
-              'The `Object` type actually means "any non-nullish value", so it is marginally better than `unknown`.',
-              '- If you want a type meaning "any object", you probably want `Record<string, unknown>` instead.',
-              '- If you want a type meaning "any value", you probably want `unknown` instead.',
-            ].join('\n'),
-          },
-          '{}': {
-            fixWith: 'Record<string, unknown>',
-            message: [
-              '`{}` actually means "any non-nullish value".',
-              '- If you want a type meaning "any object", you probably want `Record<string, unknown>` instead.',
-              '- If you want a type meaning "any value", you probably want `unknown` instead.',
-            ].join('\n'),
-          },
-          'object': {
-            fixWith: 'Record<string, unknown>',
-            message: [
-              'The `object` type is currently hard to use ([see this issue](https://github.com/microsoft/TypeScript/issues/21732)).',
-              'Consider using `Record<string, unknown>` instead, as it allows you to more easily inspect and use the keys.',
-            ].join('\n'),
-          },
-        },
-      },
-    ],
+    '@typescript-eslint/ban-types': BUGGY(
+      '@typescript-eslint/eslint-plugin:^4.20.0',
+      "It would be nice to ban certain types, however there doesn't appear to be an option to disable the default disabled types"
+    ),
     '@typescript-eslint/class-literal-property-style': WARN,
     '@typescript-eslint/consistent-indexed-object-style': [
       WARN,
@@ -299,46 +250,39 @@ module.exports = {
     '@typescript-eslint/naming-convention': [
       'warn',
       {
-        selector: 'memberLike',
+        selector: ['memberLike'],
+        format: ['camelCase', 'PascalCase'],
+        leadingUnderscore: 'forbid',
+      },
+      {
+        selector: ['variableLike'],
         format: ['camelCase'],
         leadingUnderscore: 'forbid',
       },
       {
-        selector: 'variableLike',
-        format: ['camelCase'],
-        leadingUnderscore: 'forbid',
-      },
-      {
-        selector: 'parameter',
+        selector: ['parameter'],
         format: ['camelCase'],
         leadingUnderscore: 'allow',
       },
       {
-        selector: 'variable',
+        selector: ['variable'],
         types: ['boolean'],
         format: ['PascalCase'],
         prefix: ['is', 'should', 'has', 'can', 'did', 'will'],
         leadingUnderscore: 'forbid',
       },
       {
-        selector: 'variable',
-        types: ['boolean', 'string', 'number'],
-        format: ['UPPER_CASE'],
-        modifiers: ['const'],
-        leadingUnderscore: 'forbid',
-      },
-      {
-        selector: 'variable',
+        selector: ['variable'],
         format: ['camelCase', 'UPPER_CASE', 'PascalCase'],
         leadingUnderscore: 'forbid',
       },
       {
-        selector: 'function',
+        selector: ['function'],
         format: ['camelCase'],
         leadingUnderscore: 'forbid',
       },
       {
-        selector: 'typeParameter',
+        selector: ['typeParameter'],
         format: ['PascalCase'],
         custom: {
           regex: '^[A-Z]$',
@@ -347,16 +291,12 @@ module.exports = {
         leadingUnderscore: 'forbid',
       },
       {
-        selector: 'interface',
+        selector: ['interface'],
         format: ['PascalCase'],
-        custom: {
-          regex: '^I[A-Z]',
-          match: false,
-        },
         leadingUnderscore: 'forbid',
       },
       {
-        selector: 'variable',
+        selector: ['variable'],
         modifiers: ['destructured'],
         format: ['camelCase'],
         leadingUnderscore: 'allow',
@@ -431,10 +371,9 @@ module.exports = {
     '@typescript-eslint/prefer-nullish-coalescing': WARN,
     '@typescript-eslint/prefer-optional-chain': WARN,
     '@typescript-eslint/prefer-readonly': WARN, // abiding by this rule will ease transition to the private methods proposal https://github.com/tc39/proposal-private-methods which, because it's at stage 3, will be in the language
-    '@typescript-eslint/prefer-readonly-parameter-types': [
-      WARN,
-      { ignoreInferredTypes: true },
-    ],
+    '@typescript-eslint/prefer-readonly-parameter-types': OFF(
+      'While using parameters should never be modified and making them readonly helps with this, some third party interfaces are not easily made readonly'
+    ),
     '@typescript-eslint/prefer-reduce-type-parameter': WARN,
     '@typescript-eslint/prefer-regexp-exec': WARN,
     '@typescript-eslint/prefer-string-starts-ends-with': WARN,

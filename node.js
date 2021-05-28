@@ -1,16 +1,27 @@
 /* eslint-disable radar/no-duplicate-string -- Keys are grouped based on plugins */
 
-const { BUGGY, NOT_VALUABLE, OFF, TYPESCRIPT, WARN } = require('./utils');
+const {
+  BUGGY,
+  NOT_RELEVANT,
+  NOT_VALUABLE,
+  OFF,
+  TYPESCRIPT,
+  WARN,
+} = require('./utils');
 
 module.exports = {
   env: { es6: true, node: true },
   plugins: ['node'],
   rules: {
+    // plugin:compat ***********************************************************
+    // rules URL: https://github.com/amilajack/eslint-plugin-compat
+    'compat/compat': OFF(NOT_RELEVANT),
+
     // plugin:node *************************************************************
     // rules URL: https://github.com/mysticatea/eslint-plugin-node#-rules
 
     // Possible Errors
-    'node/handle-callback-err': OFF(),
+    'node/handle-callback-err': OFF(NOT_VALUABLE),
     'node/no-callback-literal': WARN,
     'node/no-exports-assign': WARN,
     'node/no-extraneous-import': BUGGY(
@@ -51,15 +62,15 @@ module.exports = {
     'node/no-deprecated-api': WARN,
 
     // Stylistic Issues
-    'node/callback-return': OFF(),
+    'node/callback-return': OFF(NOT_VALUABLE),
     'node/exports-style': WARN,
     'node/file-extension-in-import': OFF(NOT_VALUABLE),
     'node/global-require': WARN,
     'node/no-mixed-requires': WARN,
-    'node/no-process-env': OFF(),
+    'node/no-process-env': OFF(NOT_VALUABLE),
     'node/no-restricted-import': [WARN, ['left-pad']],
     'node/no-restricted-require': [WARN, ['left-pad']],
-    'node/no-sync': OFF(),
+    'node/no-sync': OFF(NOT_VALUABLE),
     'node/prefer-global/buffer': WARN,
     'node/prefer-global/console': WARN,
     'node/prefer-global/process': WARN,
@@ -79,4 +90,4 @@ module.exports = {
   },
 };
 
-/* eslint-enable radar/no-duplicate-string -- Keys are grouped based on plugins */
+/* eslint-enable radar/no-duplicate-string */

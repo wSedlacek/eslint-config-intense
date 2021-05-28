@@ -34,7 +34,6 @@ module.exports = {
     'radar',
     'security',
     'sort-destructure-keys',
-    'sort-export-all',
     'ternary',
     'tree-shaking',
     'unicorn',
@@ -47,7 +46,9 @@ module.exports = {
     'for-direction': WARN,
     'getter-return': WARN,
     'no-async-promise-executor': WARN,
-    'no-await-in-loop': WARN,
+    'no-await-in-loop': OFF(
+      'While in many cases you do want to avoid await in loops, there are cases where order matters in which this does not apply.'
+    ),
     'no-compare-neg-zero': WARN,
     'no-cond-assign': WARN,
     'no-console': [WARN, { allow: ['warn', 'error'] }],
@@ -444,7 +445,6 @@ module.exports = {
     'no-const-assign': WARN,
     'no-dupe-class-members': WARN,
     'no-dupe-else-if': WARN,
-    'no-duplicate-imports': WARN,
     'no-new-symbol': WARN,
     'no-restricted-exports': OFF(PROJECT_BY_PROJECT),
     'no-restricted-imports': OFF(PROJECT_BY_PROJECT),
@@ -462,12 +462,6 @@ module.exports = {
     'prefer-spread': WARN,
     'prefer-template': WARN,
     'require-yield': WARN,
-    'sort-imports': [
-      WARN,
-      {
-        ignoreDeclarationSort: true,
-      },
-    ],
     'symbol-description': WARN,
 
     // plugin:@shopify *********************************************************
@@ -514,7 +508,7 @@ module.exports = {
 
     // plugin:compat ***********************************************************
     // rules URL: https://github.com/amilajack/eslint-plugin-compat
-    'compat/compat': WARN,
+    'compat/compat': OFF(PROJECT_BY_PROJECT),
 
     // plugin:eslint-comments **************************************************
     // rules URL: https://github.com/mysticatea/eslint-plugin-eslint-comments/tree/master/docs/rules
@@ -528,7 +522,10 @@ module.exports = {
     'eslint-comments/no-use': OFF(
       "Exceptions exist.  It's javascript, after all."
     ),
-    'eslint-comments/require-description': WARN,
+    'eslint-comments/require-description': [
+      WARN,
+      { ignore: ['eslint-enable'] },
+    ],
 
     // plugin:fp ***************************************************************
     // rules URL: https://github.com/jfmengels/eslint-plugin-fp#rules
@@ -540,8 +537,8 @@ module.exports = {
     'fp/no-let': OFF(),
     'fp/no-loops': OFF(),
     'fp/no-mutating-assign': WARN,
-    'fp/no-mutating-methods': WARN,
-    'fp/no-mutation': [WARN, { allowThis: true }],
+    'fp/no-mutating-methods': OFF(),
+    'fp/no-mutation': OFF(),
     'fp/no-nil': OFF(),
     'fp/no-proxy': OFF(),
     'fp/no-rest-parameters': OFF(),
@@ -589,22 +586,21 @@ module.exports = {
     ),
 
     // Stylistic
-    'import/dynamic-import-chunkname': WARN,
+    'import/dynamic-import-chunkname': OFF(
+      "It is nice to have the option to define a chunk name, but it shouldn't be required"
+    ),
     'import/exports-last': OFF(
       "I see no reason exports can't be sprinkled throughout the file"
     ),
     'import/extensions': OFF(PROJECT_BY_PROJECT),
-    'import/first': WARN,
     'import/group-exports': OFF(
       `tooling should easily answer the question of "what's exported from this module".  no need to do anything the IDE does for you.`
     ),
     'import/max-dependencies': [WARN, { max: 40 }], // I _almost_ want to turn this rule off(), but setting it to a high number with a lighter infraction (a WARN) seems better.
-    'import/newline-after-import': WARN,
     'import/no-anonymous-default-export': WARN, // since I've opted to not disallow default exports entirely, it seems at least good to make them annoying to use.
     'import/no-default-export': OFF(
       'Unfortunately some systems (e.g. Gatsby) hinge on usage of default exports.'
     ),
-    'import/no-duplicates': WARN,
     'import/no-named-default': WARN,
     'import/no-named-export': OFF(),
     'import/no-namespace': OFF(
@@ -613,26 +609,6 @@ module.exports = {
     'import/no-unassigned-import': OFF(
       'there just seem to be too may places where this has to be done'
     ),
-    'import/order': [
-      WARN,
-      {
-        'alphabetize': {
-          order: 'asc',
-          caseInsensitive: false,
-        },
-        'groups': [['external', 'builtin'], 'internal', 'parent', 'sibling'],
-        'newlines-between': 'always',
-        'pathGroups': [
-          {
-            group: 'external',
-            pattern:
-              '{@angular/**,@nestjs/**,react,react-native,react-*,@vue/**,vue,@ngneat/spectator,@ngneat/spectator/**}',
-            position: 'before',
-          },
-        ],
-        'pathGroupsExcludedImportTypes': ['react'],
-      },
-    ],
     'import/prefer-default-export': OFF(
       'named exports are better (for one reason, because TypeScript can automatically import a named resource)'
     ),
@@ -724,7 +700,10 @@ module.exports = {
     'security/detect-eval-with-expression': WARN,
     'security/detect-non-literal-regexp': WARN,
     'security/detect-non-literal-require': WARN,
-    'security/detect-object-injection': WARN,
+    'security/detect-object-injection': BUGGY(
+      'unknown',
+      'Unable to determine the difference between user provided data and derived keys'
+    ),
     'security/detect-possible-timing-attacks': WARN,
     'security/detect-pseudoRandomBytes': OFF(),
     'security/detect-buffer-noassert': OFF(),
@@ -737,19 +716,20 @@ module.exports = {
     // rules URL: https://github.com/mthadley/eslint-plugin-sort-destructure-keys
     'sort-destructure-keys/sort-destructure-keys': WARN,
 
-    // plugin:sort-export-all **************************************************
-    // rules URL: https://github.com/nirtamir2/eslint-plugin-sort-export-all
-    'sort-export-all/sort-export-all': WARN,
-
     // plugin:ternary **********************************************************
     // rules URL: https://github.com/grayedfox/eslint-plugin-ternary#rules
     'ternary/no-dupe': WARN,
-    'ternary/no-unreachable': WARN,
+    'ternary/no-unreachable': BUGGY(
+      'eslint-plugin-ternary@1.0.3',
+      'Invalidly detects duplicates'
+    ),
     'ternary/nesting': SUCCESSOR('unicorn/no-nested-ternary'),
 
     // plugin:tree-shaking *****************************************************
     // rules URL: https://github.com/lukastaegert/eslint-plugin-tree-shaking
-    'tree-shaking/no-side-effects-in-initialization': WARN,
+    'tree-shaking/no-side-effects-in-initialization': OFF(
+      'This plugin is really cool, but in the current framework landscape it is too aggressive to target no side effects'
+    ),
 
     // plugin:unicorn **********************************************************
     // rules URL: https://github.com/sindresorhus/eslint-plugin-unicorn#rules
@@ -757,7 +737,9 @@ module.exports = {
     'unicorn/catch-error-name': WARN,
     'unicorn/consistent-destructuring': WARN,
     'unicorn/consistent-function-scoping': WARN,
-    'unicorn/custom-error-definition': WARN,
+    'unicorn/custom-error-definition': OFF(
+      'There are a few conventions for building errors and this only covers one of them making its usefulness limited'
+    ),
     'unicorn/error-message': WARN,
     'unicorn/escape-case': WARN,
     'unicorn/expiring-todo-comments': [WARN, { allowWarningComments: false }],
@@ -782,19 +764,19 @@ module.exports = {
     'unicorn/no-null': WARN,
     'unicorn/no-object-as-default-parameter': WARN,
     'unicorn/no-process-exit': WARN,
-    // TODO (@wSedlacek) [2021-03-30]: Enable unicorn/no-static-only-class
-    // 'unicorn/no-static-only-class': WARN,
+    'unicorn/no-static-only-class': WARN,
     'unicorn/no-this-assignment': WARN,
     'unicorn/no-unreadable-array-destructuring': WARN,
     'unicorn/no-unsafe-regex': WARN,
     'unicorn/no-unused-properties': WARN,
-    'unicorn/no-useless-undefined': WARN,
+    'unicorn/no-useless-undefined': OFF(
+      'While this is a good idea for consistency, it conflicts with `consistent-return` which I think is more important'
+    ),
     'unicorn/no-zero-fractions': WARN,
     'unicorn/numeric-separators-style': WARN,
     'unicorn/prefer-add-event-listener': WARN,
     'unicorn/prefer-array-find': WARN,
-    // TODO (@wSedlacek) [2021-03-30]: Enable unicorn/prefer-array-flat
-    // 'unicorn/prefer-array-flat': WARN,
+    'unicorn/prefer-array-flat': WARN,
     'unicorn/prefer-array-flat-map': WARN,
     'unicorn/prefer-array-index-of': WARN,
     'unicorn/prefer-array-some': WARN,
@@ -822,7 +804,7 @@ module.exports = {
     'unicorn/prefer-string-trim-start-end': WARN,
     'unicorn/prefer-ternary': WARN,
     'unicorn/prefer-type-error': WARN,
-    'unicorn/prevent-abbreviations': WARN,
+    'unicorn/prevent-abbreviations': OFF(PROJECT_BY_PROJECT),
     'unicorn/string-content': OFF(),
     'unicorn/throw-new-error': WARN,
 

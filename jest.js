@@ -1,4 +1,4 @@
-const { NOT_VALUABLE, OFF, SUCCESSOR, WARN } = require('./utils');
+const { BUGGY, NOT_VALUABLE, OFF, SUCCESSOR, WARN } = require('./utils');
 
 module.exports = {
   extends: './node.js',
@@ -10,6 +10,10 @@ module.exports = {
   },
   plugins: ['jest', 'jest-dom', 'jest-formatting'],
   rules: {
+    // plugin:eslint ***********************************************************
+    // rules URL: https://github.com/eslint/eslint/tree/master/docs/rules
+    'max-classes-per-file': OFF(NOT_VALUABLE),
+
     // plugin:@shopify *********************************************************
     // rules URL: https://github.com/Shopify/web-configs/tree/main/packages/eslint-plugin#plugin-provided-rules
     '@shopify/jest/no-all-mocks-methods': WARN,
@@ -28,6 +32,7 @@ module.exports = {
     // plugin:radar ************************************************************
     // rules URL: https://github.com/es-joy/eslint-plugin-radar#rules
     'radar/no-identical-functions': OFF(NOT_VALUABLE),
+    'radar/no-duplicate-string': OFF(NOT_VALUABLE),
 
     // plugin:jest *************************************************************
     // rules URL: https://github.com/jest-community/eslint-plugin-jest#rules
@@ -90,12 +95,21 @@ module.exports = {
 
     // plugin:jest-dom *******************************************************
     // rules URL: https://github.com/testing-library/eslint-plugin-jest-dom#supported-rules
-    'jest-dom/prefer-checked': WARN,
+    'jest-dom/prefer-checked': BUGGY(
+      'eslint-plugin-jest-dom@3.6.5',
+      'Crashes due to undefined reference - https://github.com/testing-library/eslint-plugin-jest-dom/issues/127'
+    ),
     'jest-dom/prefer-empty': WARN,
-    'jest-dom/prefer-enabled-disabled': WARN,
+    'jest-dom/prefer-enabled-disabled': BUGGY(
+      'eslint-plugin-jest-dom@3.6.5',
+      'Crashes due to undefined reference - https://github.com/testing-library/eslint-plugin-jest-dom/issues/127'
+    ),
     'jest-dom/prefer-focus': WARN,
     'jest-dom/prefer-in-document': WARN,
-    'jest-dom/prefer-required': WARN,
+    'jest-dom/prefer-required': BUGGY(
+      'eslint-plugin-jest-dom@3.6.5',
+      'Crashes due to undefined reference - https://github.com/testing-library/eslint-plugin-jest-dom/issues/127'
+    ),
     'jest-dom/prefer-to-have-attribute': WARN,
     'jest-dom/prefer-to-have-class': WARN,
     'jest-dom/prefer-to-have-style': WARN,
